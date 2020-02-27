@@ -7,16 +7,16 @@ from hosts import get_host_lines, save_host_lines
 HOST_LOCATION = "/etc/hosts"
 
 if len(sys.argv) < 2:
-    print("What hostname should be blocked?")
+    print("What hostname should be unblocked?")
     sys.exit()
-domain_to_block = sys.argv[1]
+domain_to_unblock = sys.argv[1]
 
 host_contents = get_host_lines(HOST_LOCATION)
 
-new_line = "0.0.0.0 " + domain_to_block
-if new_line not in host_contents:
-    host_contents.append(new_line)
+host_contents = [line for line in host_contents\
+    if domain_to_unblock not in line.split()[1]]
 
 save_host_lines(HOST_LOCATION, host_contents)
 
-print("Blocked %s" % domain_to_block)
+print("Unblocked %s" % domain_to_unblock)
+
